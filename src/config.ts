@@ -1,7 +1,0 @@
-export const CONFIG = {
-    BASE_URL: "https://sl140.myc4p.com/b1s/v1/",
-    COMPANY_DB: "TEST_SIMPLY_CHOCOLATE",
-    USER_NAME: "MYC4P\\Maria.Green",
-    PASSWORD: "Ecommerce2026&",
-    TREE_CODE: "0021050008",
-}
