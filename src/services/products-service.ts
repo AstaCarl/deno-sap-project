@@ -1,4 +1,4 @@
-import { ProductApi } from "../API/product-api.ts";
+import { ProductApi } from "../api/product-api.ts";
 import { RawMaterialMapper } from "../mappers/raw-material-mapper.ts";
 import { RawMaterial } from "../types.ts";
 
