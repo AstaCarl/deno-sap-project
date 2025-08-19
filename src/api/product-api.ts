@@ -1,4 +1,4 @@
-import { SapApi } from "../API/generic-api.ts";
+import { SapApi } from "../api/api.ts";
 
 export class ProductApi {
 
