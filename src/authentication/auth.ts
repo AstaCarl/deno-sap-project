@@ -1,4 +1,4 @@
-import { SessionService } from "../auth/session-service.ts";
+import { SessionService } from "./session-service.ts";
 import { UserCredentials } from "../types.ts";
 
 // Function to log in and save session
@@ -6,7 +6,7 @@ export const login = async () => {
 
   const user: UserCredentials = {
     CompanyDB: `${Deno.env.get("COMPANY_DB")}`,
-    UserName: `${Deno.env.get("USERNAME")}`,
+    UserName: `${Deno.env.get("USER_NAME")}`,
     Password: `${Deno.env.get("PASSWORD")}`,
   };
 

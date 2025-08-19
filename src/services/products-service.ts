@@ -14,7 +14,6 @@ export class ProductService {
       Deno.env.get("TREE_CODE") ?? "",
       productPath
     );
-    console.log('env tree code', Deno.env.get("TREE_CODE"));
 
     const stack = [...rootTree["ProductTreeLines"]];
 

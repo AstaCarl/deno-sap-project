@@ -1,4 +1,4 @@
-import { SessionService } from "../auth/session-service.ts";
+import { SessionService } from "../authentication/session-service.ts";
 
 export class SapApi {
   static async get(endPoint: string) {
