@@ -4,12 +4,6 @@ interface UserCredentials {
   Password: string;
 }
 
-interface FullProductTree {
-  ID: string;
-  name: string;
-  type: string;
-}
-
 interface IngredientWithPercentage {
   itemName: string;
   itemCode: string;
@@ -77,7 +71,6 @@ interface Allergies {
 }
 export type {
   UserCredentials,
-  FullProductTree,
   RawMaterial,
   Nutrition,
   Allergies,
