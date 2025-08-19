@@ -1,18 +1,17 @@
-import { UserCredentials } from "../types.ts";
-import { CONFIG } from "../config.ts";
 import { SessionService } from "../auth/session-service.ts";
+import { UserCredentials } from "../types.ts";
 
 // Function to log in and save session
 export const login = async () => {
 
   const user: UserCredentials = {
-    CompanyDB: `${CONFIG.COMPANY_DB}`,
-    UserName: `${CONFIG.USER_NAME}`,
-    Password: `${CONFIG.PASSWORD}`,
+    CompanyDB: `${Deno.env.get("COMPANY_DB")}`,
+    UserName: `${Deno.env.get("USERNAME")}`,
+    Password: `${Deno.env.get("PASSWORD")}`,
   };
 
   try {
-    const res = await fetch(`${CONFIG.BASE_URL}/Login`, {
+    const res = await fetch(`${Deno.env.get("BASE_URL")}/Login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +33,7 @@ export const login = async () => {
 // logout function to clear session
 export const logout = async () => {
   const sessionId = await SessionService.getSession();
-  const res = await fetch(`${CONFIG.BASE_URL}/Logout`, {
+  const res = await fetch(`${Deno.env.get("BASE_URL")}/Logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
