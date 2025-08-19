@@ -1,4 +1,5 @@
 import { RawMaterial, AllergenStatus, Allergies } from "../types.ts";
+import { ALLERGEN_TRANSLATIONS } from "../lang/allergies.ts";
 
 export class AllergyService {
   private static readonly NUT_ALLERGENS = [
@@ -57,14 +58,15 @@ export class AllergyService {
         status !== AllergenStatus.FreeFrom &&
         !this.NUT_ALLERGENS.includes(allergen as any)
       ) {
-        allergenList.push(allergen);
+        allergenList.push(
+          ALLERGEN_TRANSLATIONS[allergen as keyof typeof ALLERGEN_TRANSLATIONS]
+        );
       }
     });
     return allergenList.length > 0
-    ? `Indeholder spor af ${allergenList.join(", ")}`
-    : "Ingen allergener";
+      ? `Indeholder spor af ${allergenList.join(", ")}`
+      : "Ingen allergener";
   }
-
 
   // Helper function to initialize allergies with all allergens set to "Free from"
   private static initializeAllergies(): Allergies {
@@ -91,4 +93,9 @@ export class AllergyService {
       molluscs: AllergenStatus.FreeFrom,
     };
   }
+
+  // private static translateAllergens(allergies: Allergies): Allergies {
+
+  // }
+  // )
 }

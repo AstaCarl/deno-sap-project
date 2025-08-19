@@ -21,7 +21,7 @@ interface Nutrition {
   energyKJ: number;
   energyKcal: number;
   fattyAcids: number;
-  allergiesInFullProduct?: Allergies; // Optional, if not always present
+  allergiesInFullProduct?: Allergies;
 }
 
 interface RawMaterial {
@@ -36,7 +36,7 @@ interface RawMaterial {
   energyKJ: number;
   energyKcal: number;
   fattyAcids: number;
-  ingredientsDescription?: string; // Optional, if not always present
+  ingredientsDescription?: string;
   U_CCF_Ingrediens_DA?: string;
   allergies?: Allergies;
 }
