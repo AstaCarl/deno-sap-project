@@ -12,6 +12,14 @@ interface IngredientWithPercentage {
   percentage: number;
 }
 
+interface ProductTreeLines {
+  itemCode: string;
+  itemName: string;
+  quantity: number;
+  itemType: string;
+  childNumber: number;
+}
+
 interface Nutrition {
   fat: number;
   protein: number;
@@ -28,6 +36,7 @@ interface RawMaterial {
   itemCode: string;
   itemName: string;
   quantityKg: number;
+  parentItemCode?: string; // Optional, used for parent-child relationships
   fat: number;
   protein: number;
   carbohydrates: number;
@@ -75,5 +84,6 @@ export type {
   Nutrition,
   Allergies,
   IngredientWithPercentage,
+  ProductTreeLines,
 };
 export { AllergenStatus };

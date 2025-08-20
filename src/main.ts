@@ -5,7 +5,7 @@ import { IngredientsService } from "./services/ingredients-service.ts";
 import { NutritionService } from "./services/nutrition-service.ts";
 import { ProductService } from "./services/products-service.ts";
 
-const productFields = ["TreeCode", "ProductDescription", "ProductTreeLines"];
+const productFields = ["TreeCode", "ProductDescription", "ProductTreeLines", ];
 
 const itemFields = [
   "ItemCode",
@@ -24,7 +24,8 @@ const itemFields = [
 ];
 
 const productPath = `?$select=${productFields.join(",")}`;
-const itemPath = `$select=${itemFields.join(",")}`;
+const itemPath = `?$select=${itemFields.join(",")}`;
+const productPath2 = `?$select=ProductTreeLines`;
 
 // Ensure session is valid before making API calls
 const ensureValidSession = async () => {
@@ -106,8 +107,35 @@ const getFullAnalysis = async () => {
   }
 };
 
-// getNutritionOnly();
-getAllergiesOnly();
-// getFullAnalysis();
+// const getAccumulatedProductTree = async () => {
+//   try {
+//     await ensureValidSession();
+//     const productTree = await ProductService.getProductTree(productPath2);
+//     console.log("Product tree:", productTree);
+//     return productTree;
+//   } catch (error) {
+//     console.error("An error occurred while fetching the product tree:", error);
+//   }
+// }
+
+// const getFullProductTree = async (productPath: string, itemPath: string) => {
+//   try {
+//     await ensureValidSession();
+//     const fullProductTree = await ProductService.getFullProductTree(
+//       productPath,
+//       itemPath
+//     );
+//     console.log("Full product tree:", fullProductTree);
+//     return fullProductTree;
+//   } catch (error) {
+//     console.error("An error occurred while fetching the full product tree:", error);
+//   }
+// }
+
+getNutritionOnly();
+// getAllergiesOnly();
+getFullAnalysis();
+// getAccumulatedProductTree();
+// getFullProductTree(productPath, itemPath);
 
 // logout();

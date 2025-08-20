@@ -45,7 +45,8 @@ export class ProductService {
         console.error(`Failed to fetch item (${currentTreeLine.ItemCode})`);
       }
     }
-
+    
+console.log("Full product tree fetched successfully.", fullProductTree);
     return fullProductTree; // Return the complete product tree
   }
 

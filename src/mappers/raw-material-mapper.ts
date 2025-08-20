@@ -18,6 +18,7 @@ export class RawMaterialMapper {
         itemCode: item.ItemCode,
         itemName: item.ItemName,
         quantityKg: item.quantity,
+        // parentItemCode: item.ParentItem,
         fat: this.parseNumber(item.U_BOYX_fedt),
         protein: this.parseNumber(item.U_BOYX_Protein),
         carbohydrates: this.parseNumber(item.U_BOYX_Kulhydrat),
