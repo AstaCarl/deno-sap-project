@@ -1,7 +1,9 @@
 import { RawMaterial, AllergenStatus, Allergies } from "../types.ts";
 import { ALLERGEN_TRANSLATIONS } from "../lang/allergies.ts";
 
+// AllergyService class to analyze and summarize allergies in raw materials
 export class AllergyService {
+  // List of nut allergens for special handling
   private static readonly NUT_ALLERGENS = [
     "almonds",
     "hazelnuts",
@@ -12,50 +14,91 @@ export class AllergyService {
     "macadamias",
   ] as const;
 
+  private static readonly PRIORITY = {
+    [AllergenStatus.InProduct]: 3,
+    [AllergenStatus.MayContainTracesOf]: 2,
+    [AllergenStatus.FreeFrom]: 1,
+  };
+
+  // Method to analyze allergies in raw materials
   static analyzeAllergies(rawMaterials: RawMaterial[]) {
     // call the helper function to initialize allergies
-    const productAllergies: Allergies = this.initializeAllergies();
+    const finalProductAllergies: Allergies = this.initializeAllergies();
 
-    // Initialize an array to keep track of allergens present in the bar
+    // loop through each raw materials
+    rawMaterials.forEach((material) => {
+      if (!material.allergies) return; // Skip if no allergy data
 
-    // process each raw material for allergens
-    for (const material of rawMaterials) {
-      if (!material.allergies) continue;
+      // Object.entries returns an array of key-value pairs
+      // [["gluten", "FreeFrom"], ["eggs", "InProduct"]], etc.
+      // Loop through each allergen in the material's allergies
+      // Assigns the [allergen, staus] to allergen and status variables
+      // allergen="gluten", status="FreeFrom"
+      Object.entries(material.allergies).forEach(
+        ([allergen, rawMaterialStatus]) => {
+          // Gets the current status of the allergen from the product allergies
+          // e.g., productAllergies[gluten] = AllergenStatus.FreeFrom
+          // e.g., productAllergies[eggs] = AllergenStatus.InProduct
+          const currentStatusInFinalProduct =
+            finalProductAllergies[allergen as keyof Allergies];
 
-      for (const [allergenKey, status] of Object.entries(material.allergies)) {
-        const currentStatus = productAllergies[allergenKey as keyof Allergies];
-
-        // Simple priority: InProduct > MayContainTracesOf > FreeFrom
-        if (
-          status === AllergenStatus.InProduct ||
-          (status === AllergenStatus.MayContainTracesOf &&
-            currentStatus === AllergenStatus.FreeFrom)
-        ) {
-          (productAllergies as any)[allergenKey] = status;
+          // Only upgrade if new status has higher priority
+          // passed to method is the status, from the raw material, current status in the final product
+          // e.g., rawMaterialStatus = AllergenStatus.InProduct
+          // e.g., currentStatusInFinalProduct = AllergenStatus.FreeFrom
+          // e.g., shouldUpgradeAllergenStatus(AllergenStatus.InProduct, AllergenStatus.FreeFrom) = true
+          // e.g., shouldUpgradeAllergenStatus(AllergenStatus.FreeFrom, AllergenStatus.InProduct) = false
+          if (
+            this.shouldUpgradeAllergenStatus(
+              rawMaterialStatus,
+              currentStatusInFinalProduct
+            )
+          ) {
+            // Upgrade the allergen status in the final product if the raw material's status is higher priority
+            finalProductAllergies[allergen as keyof Allergies] =
+              rawMaterialStatus;
+          }
         }
-      }
-    }
+      );
+    });
+
     return {
-      productAllergies,
-      allergenString: this.createAllergyString(productAllergies),
+      finalProductAllergies,
+      allergenString: this.createAllergyString(finalProductAllergies), // Create a string representation of the allergies
     };
+  }
+
+  private static shouldUpgradeAllergenStatus(
+    rawMaterialStatus: AllergenStatus,
+    currentStatusInFinalProduct: AllergenStatus
+  ): boolean {
+    // Compare the priority of the new status with the current status
+    // Sugar: shouldUpgrade("Free from", "Free from") → 1 > 1 = false → No update
+    // Cocoa: shouldUpgrade("Free from", "May contain traces of") → 1 > 2 = false → No update
+    // Milk powder: shouldUpgrade("In product", "Free from") → 3 > 1 = true → UPDATE!
+    // Egg: shouldUpgrade("May contain traces of", "In product") → 2 > 3 = false → No update
+    return (
+      this.PRIORITY[rawMaterialStatus] >
+      this.PRIORITY[currentStatusInFinalProduct]
+    );
   }
 
   private static createAllergyString(allergies: Allergies): string {
     const allergenList: string[] = [];
 
-    //check for nuts
-    const hasNuts = this.NUT_ALLERGENS.some(
-      (nut) => allergies[nut] !== AllergenStatus.FreeFrom
+    // Check for nut allergens first
+    const hasNutsTraces = this.NUT_ALLERGENS.some(
+      (nut) => allergies[nut] === AllergenStatus.MayContainTracesOf
     );
-    if (hasNuts) {
+
+    if (hasNutsTraces) {
       allergenList.push("nødder");
     }
 
     // check other allergens
     Object.entries(allergies).forEach(([allergen, status]) => {
       if (
-        status !== AllergenStatus.FreeFrom &&
+        status === AllergenStatus.MayContainTracesOf &&
         !this.NUT_ALLERGENS.includes(allergen as any)
       ) {
         allergenList.push(
@@ -64,8 +107,8 @@ export class AllergyService {
       }
     });
     return allergenList.length > 0
-      ? `Indeholder spor af ${allergenList.join(", ")}`
-      : "Ingen allergener";
+      ? `Kan indeholde spor af ${allergenList.join(", ")}`
+      : "";
   }
 
   // Helper function to initialize allergies with all allergens set to "Free from"
@@ -93,9 +136,4 @@ export class AllergyService {
       molluscs: AllergenStatus.FreeFrom,
     };
   }
-
-  // private static translateAllergens(allergies: Allergies): Allergies {
-
-  // }
-  // )
 }

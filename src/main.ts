@@ -99,7 +99,7 @@ const getFullAnalysis = async () => {
       ingredients: fullIngredientsString,
     };
 
-    console.log("Dark Marci Complete Analysis:", result);
+    console.log("Complete Analysis:", result);
     return result;
   } catch (error) {
     console.error("An error occurred:", error);
@@ -107,7 +107,7 @@ const getFullAnalysis = async () => {
 };
 
 // getNutritionOnly();
-// getAllergiesOnly();
-getFullAnalysis();
+getAllergiesOnly();
+// getFullAnalysis();
 
 // logout();

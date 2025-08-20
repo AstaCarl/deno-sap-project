@@ -1,6 +1,8 @@
 import { SessionService } from "../authentication/session-service.ts";
 
+// Sap api class to handle API requests
 export class SapApi {
+  // Method to make a GET request to the SAP API
   static async get(endPoint: string) {
     const sessionId = await SessionService.getSession();
 

@@ -55,11 +55,12 @@ export class IngredientsService {
       .join(", ");
   }
 
+
   // format a single ingredient with its percentage
   private static formatSingleIngredient(
     ingredient: IngredientWithPercentage
   ): string {
-    // Add chocolate-specific information to description and insert percentage
+    // Add chocolate-specific information to description
     const description = this.addChocolateInfo(
       ingredient.itemName,
       ingredient.description

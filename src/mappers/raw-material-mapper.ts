@@ -1,13 +1,17 @@
 import { AllergenStatus, Allergies, RawMaterial } from "../types.ts";
 
-
+// mapper class to convert raw data into objects of type RawMaterial
 export class RawMaterialMapper {
+
+  // Parses a string value to a number, replacing commas with dots for decimal conversion
   private static parseNumber(value: string | undefined): number {
     return parseFloat(value?.replace(",", ".") || "0");
   }
+
+  // Maps a single item to a RaWMaterial object
   static mapMultiple(
     items: any[],
-    includeAllergies: boolean = false
+    includeAllergies: boolean = false // Whether to include allergies in the mapping
   ): RawMaterial[] {
     return items.map((item) => {
       const rawMaterial: RawMaterial = {
@@ -32,6 +36,7 @@ export class RawMaterialMapper {
       return rawMaterial;
     });
   }
+  // Maps allergies from the item object to the Allergies type
   private static mapAllergies(item: any): Allergies {
     return {
       gluten: item.U_BOYX_gluten || AllergenStatus.FreeFrom,
