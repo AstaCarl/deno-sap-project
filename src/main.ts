@@ -107,35 +107,8 @@ const getFullAnalysis = async () => {
   }
 };
 
-// const getAccumulatedProductTree = async () => {
-//   try {
-//     await ensureValidSession();
-//     const productTree = await ProductService.getProductTree(productPath2);
-//     console.log("Product tree:", productTree);
-//     return productTree;
-//   } catch (error) {
-//     console.error("An error occurred while fetching the product tree:", error);
-//   }
-// }
-
-// const getFullProductTree = async (productPath: string, itemPath: string) => {
-//   try {
-//     await ensureValidSession();
-//     const fullProductTree = await ProductService.getFullProductTree(
-//       productPath,
-//       itemPath
-//     );
-//     console.log("Full product tree:", fullProductTree);
-//     return fullProductTree;
-//   } catch (error) {
-//     console.error("An error occurred while fetching the full product tree:", error);
-//   }
-// }
-
-getNutritionOnly();
+// getNutritionOnly();
 // getAllergiesOnly();
 getFullAnalysis();
-// getAccumulatedProductTree();
-// getFullProductTree(productPath, itemPath);
 
 // logout();
