@@ -82,7 +82,7 @@ export class ProductService {
     }
     // Convert Map to Array
     const finalIngredientsList = Array.from(ingredientsCache.values());
-    console.log("Final ingredients list:", finalIngredientsList);
+    // console.log("Final ingredients list:", finalIngredientsList);
     return finalIngredientsList;
   }
 

@@ -1,4 +1,5 @@
 import { RawMaterial, IngredientWithPercentage } from "../types.ts";
+import { ProductService } from "./products-service.ts";
 
 export class IngredientsService {
   static getIngredients(rawMaterials: RawMaterial[]) {
@@ -38,6 +39,32 @@ export class IngredientsService {
     });
   }
 
+  static async getIngredientsOnly(productPath: string, itemPath: string) {
+    const fullProductTree = await ProductService.getFullProductTree(
+      productPath,
+      itemPath
+    );
+
+    // Filter to only get "Råvare" items
+    const rawMaterialsOnly = fullProductTree.filter(
+      (item) => item.U_CCF_Type === "Råvare"
+    );
+    const sortedIngredients = rawMaterialsOnly.sort((a, b) => b.quantity - a.quantity);
+
+    // Map to the simplified ingredient format
+    return sortedIngredients.map(this.mapIngredients);
+    // return rawMaterialsOnly.map(this.mapIngredients);
+  }
+
+  private static mapIngredients(ingredient: any) {
+    return {
+      itemCode: ingredient.ItemCode,
+      itemName: ingredient.ItemName,
+      ingredient: ingredient.U_CCF_Ingrediens_DA,
+      calculatedQuantity: ingredient.quantity,
+    };
+  }
+
   // Sorts ingredients by percentage in descending order
   private static sortByPercentage(
     ingredients: IngredientWithPercentage[]
@@ -54,7 +81,6 @@ export class IngredientsService {
       .map((ingredient) => this.formatSingleIngredient(ingredient))
       .join(", ");
   }
-
 
   // format a single ingredient with its percentage
   private static formatSingleIngredient(

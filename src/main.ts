@@ -21,6 +21,27 @@ const itemFields = [
   "U_BOYX_Protein",
   "U_BOYX_salt",
   "U_CCF_Ingrediens_DA",
+  "U_BOYX_gluten",
+	"U_BOYX_Krebsdyr",
+	"U_BOYX_aag",
+	"U_BOYX_fisk",
+	"U_BOYX_JN",
+	"U_BOYX_soja",
+	"U_BOYX_ML",
+	"U_BOYX_mandel",
+	"U_BOYX_hassel",
+	"U_BOYX_val",
+	"U_BOYX_Cashe",
+	"U_BOYX_Pekan",
+	"U_BOYX_peka",
+	"U_BOYX_Pistacie",
+	"U_BOYX_Queensland",
+	"U_BOYX_Selleri",
+	"U_BOYX_Sennep",
+	"U_BOYX_Sesam",
+	"U_BOYX_Svovldioxid",
+	"U_BOYX_Lupin",
+	"U_BOYX_BL",
 ];
 
 const productPath = `?$select=${productFields.join(",")}`;
@@ -107,8 +128,23 @@ const getFullAnalysis = async () => {
   }
 };
 
+const getIngredientsOnly = async () => {
+  try {
+    await ensureValidSession();
+    const ingredients = await IngredientsService.getIngredientsOnly(productPath, itemPath);
+    console.log("Ingredients:", ingredients);
+    return ingredients;
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+};
+
+
+// getIngredientsOnly();
+// Returns: [{ itemCode, itemName, ingredient, calculatedQuantity }, ...]
+
 // getNutritionOnly();
-// getAllergiesOnly();
-getFullAnalysis();
+getAllergiesOnly();
+// getFullAnalysis();
 
 // logout();
